@@ -1,0 +1,35 @@
+# smithery.yaml
+# This file tells Smithery.ai how to build and run your agent.
+
+build:
+  # Use the Dockerfile in the root of the repository
+  dockerfile: Dockerfile
+
+startCommand:
+  type: http
+  # configSchema: # Removed for simplicity in this basic test
+  #   type: object
+  #   properties: {}
+  # required: []
+
+run:
+  # Command to run the agent.
+  command: ["python", "-u", "server.py"] # -u flag for unbuffered output
+
+  # Ports to expose from the container.
+  ports:
+    - "8000:8000"
+
+  # Environment variables to set for the running agent.
+  environment:
+    PYTHONUNBUFFERED: "1" # Ensure Python output is not buffered
+    PYTHONDONTWRITEBYTECODE: "1" # Don't write .pyc files
+    # MCP_SESSION_TIMEOUT: "3600" # Not needed if session_management is False
+    # MCP_MAX_SESSIONS: "100" # Not needed
+    # MCP_STREAM_TIMEOUT: "300" # Can keep if stream is used, but not critical for basic test
+    # MCP_ENABLE_SSE: "true" # Can keep, but not critical for basic test
+
+  # Resource limits (keep these as provided by Smithery.ai)
+  resources:
+    memory: "512Mi" # Memory limit
+    cpu: "0.5" # CPU limit (50% of one core)
